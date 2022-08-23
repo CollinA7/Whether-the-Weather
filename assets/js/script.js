@@ -23,9 +23,23 @@ var formSubmitHandler = function(event){
 
 var getCityWeather = function(city) {
 
-    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + cityInputEl + "&appid=4fce90cadf9eba29dd340628ab5664dc"
+    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=4fce90cadf9eba29dd340628ab5664dc"
         
-    fetch(apiUrl).then((response) => response.json()).then((data) => console.log(data));
+    fetch(apiUrl).then((response) => response.json()).then((data) => console.log(data)); // comment out this section and add a displayWeather function to display the fetched data
+    // fetch(apiUrl).then(function(response) {
+    //     if (response.ok) {
+    //         console.log(response);
+    //         response.json().then(function(data) {
+    //             console.log(data);
+    //             displayWeather(data, city);
+    //         });
+    //     }else {
+    //         alert("Please enter a valid location.")
+    //     }
+    // })
+    // .catch(function(error) {
+    //     alert("Unable to search for city requested.")
+    // })
 }
 
 $(cityFormEl).on("click", formSubmitHandler)
