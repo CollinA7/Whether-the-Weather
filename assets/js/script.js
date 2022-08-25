@@ -2,6 +2,7 @@ var cityFormEl = document.querySelector("#form-submit");
 var cityInputEl = document.querySelector("#city-input");
 // var weatherContainer = document.querySelector("#display-city");
 var cityTempContainer = document.querySelector(".temp")
+var spanUv = document.querySelector("#uv-value")
 
 var formSubmitHandler = function(event){
     // event.preventDefault stops the page from being refreshed
@@ -52,7 +53,7 @@ var displayWeather = function(city) {
     var lon = city.coord.lon;
     var UvI = ""
 
-    console.log(lat, lon)   
+    // console.log(lat, lon)   
    
     var apiUrl = "https://api.openweathermap.org/data/2.5/uvi?appid=4fce90cadf9eba29dd340628ab5664dc&lat=" + lat + "&lon=" + lon
 
@@ -65,12 +66,13 @@ var displayWeather = function(city) {
     });
     
     var displayUvI = function(UvI) {
-        console.log(UvI.value)
-
+        var UvI = UvI.value
+        console.log(UvI)
+        
+        spanUv.innerHTML(UvI)
         
     }
 
-    
     
 }
 
