@@ -26,11 +26,10 @@ var formSubmitHandler = function(event){
 var getCityWeather = function(city) {
 
     var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=4fce90cadf9eba29dd340628ab5664dc"
-        
-    // fetch(apiUrl).then((response) => response.json()).then((data) => console.log(data)); // comment out this section and add a displayWeather function to display the fetched data
+    
+    //Here is the request to the API
     fetch(apiUrl).then(function(response) {
         if (response.ok) {
-            // console.log(response);
             response.json().then(function(data) {
                 displayWeather(data, city);
             });
@@ -43,12 +42,35 @@ var getCityWeather = function(city) {
     })
 }
 
+
+
 var displayWeather = function(city) {
+    var temp = city.main.feels_like;
+    var humidty = city.main.humidity;
+    var windSpeed = city.wind.speed;
+    var lat = city.coord.lat;
+    var lon = city.coord.lon;
+    var UvI = ""
+
+    console.log(lat, lon)   
+   
+    var apiUrl = "https://api.openweathermap.org/data/2.5/uvi?appid=4fce90cadf9eba29dd340628ab5664dc&lat=" + lat + "&lon=" + lon
+
+    fetch(apiUrl).then(function(response) {
+        if (response.ok) {
+            response.json().then(function(data) {
+                displayUvI(data, UvI)
+            });
+        };
+    });
     
-    console.log(city)
-    // console.log(data)
-    var cityWeatherStats = document.getElementsByClassName("temp");
-    cityWeatherStats.textContent = city.main.feels_like;
+    var displayUvI = function(UvI) {
+        console.log(UvI.value)
+
+        
+    }
+
+    
     
 }
 
