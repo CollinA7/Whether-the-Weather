@@ -1,8 +1,5 @@
 var cityFormEl = document.querySelector("#form-submit");
 var cityInputEl = document.querySelector("#city-input");
-// var weatherContainer = document.querySelector("#display-city");
-var cityTempContainer = document.querySelector(".temp")
-var spanUv = document.querySelector("#uv-value")
 
 var formSubmitHandler = function(event){
     // event.preventDefault stops the page from being refreshed
@@ -17,16 +14,19 @@ var formSubmitHandler = function(event){
         getCityWeather(city);
 
         // this clears the old content
-        cityTempContainer.textContent = "";
         cityInputEl.value = "";
+
+
     }else {
         alert("please enter a valid city")
     }
+
 };
 
 var getCityWeather = function(city) {
-
-    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&appid=4fce90cadf9eba29dd340628ab5664dc"
+    
+    var apiUrl = "https://api.openweathermap.org/data/2.5/weather?q=" + city + "&units=imperial&appid=4fce90cadf9eba29dd340628ab5664dc"
+    
     
     //Here is the request to the API
     fetch(apiUrl).then(function(response) {
@@ -46,18 +46,24 @@ var getCityWeather = function(city) {
 
 
 var displayWeather = function(city) {
+    var cityName = city.name;
     var temp = city.main.feels_like;
     var humidty = city.main.humidity;
-    var windSpeed = city.wind.speed;
+    var wind = city.wind.speed;
     var lat = city.coord.lat;
     var lon = city.coord.lon;
     var UvI = ""
+    
+    // This appends the basic stats to the city container
+    document.getElementById("temp").innerHTML = temp;
+    document.getElementById("humidity").innerHTML = humidty;
+    document.getElementById("wind").innerHTML = wind;
+    document.getElementById("city-searched").innerHTML = cityName;
+    
+       
+    var apiUrl1 = "https://api.openweathermap.org/data/2.5/uvi?appid=4fce90cadf9eba29dd340628ab5664dc&lat=" + lat + "&lon=" + lon;
 
-    // console.log(lat, lon)   
-   
-    var apiUrl = "https://api.openweathermap.org/data/2.5/uvi?appid=4fce90cadf9eba29dd340628ab5664dc&lat=" + lat + "&lon=" + lon
-
-    fetch(apiUrl).then(function(response) {
+    fetch(apiUrl1).then(function(response) {
         if (response.ok) {
             response.json().then(function(data) {
                 displayUvI(data, UvI)
@@ -65,14 +71,28 @@ var displayWeather = function(city) {
         };
     });
     
+    // this function works independantly to capture the UV index
     var displayUvI = function(UvI) {
         var UvI = UvI.value
         console.log(UvI)
         
-        spanUv.innerHTML(UvI)
-        
-    }
+        document.getElementById("uv-value").innerHTML = UvI
+    };
 
+    // this fetch request is for the 5 day forcast
+    var apiUrl = "api.openweathermap.org/data/2.5/forecast?lat=" + lat + "&lon=" + lon + "&appid=4fce90cadf9eba29dd340628ab5664dc";
+
+    fetch(apiUrl).then(function(response) {
+        if(response.ok) {
+            response.json().then(function(data) {
+                display5Day(data)
+            })
+        }
+    });
+    
+    var display5Day = function(data) {
+        console.log(data)
+    }
     
 }
 
